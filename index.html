@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cincinnati Bengals Formation</title>
+    <title>Bengals Roster Quiz</title>
     <style>
         /* ============================================
            GLOBAL STYLES
@@ -27,7 +27,7 @@
         .field-container {
             width: 100vw;
             height: 100vh;
-            background: #4CAF50; /* Simple light green field background */
+            background: #60b922; /* Simple light green field background */
             position: relative;
             display: flex;
             align-items: center;
@@ -37,17 +37,7 @@
 
         /* ============================================
            FIELD MARKINGS - White Lines
-           ============================================ */
-        .field-markings {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
+           ============================================ *
         /* Horizontal yard lines every 10 yards */
         .yard-line {
             position: absolute;
@@ -71,25 +61,6 @@
 
         .sideline.top { top: 0; }
         .sideline.bottom { bottom: 0; }
-
-        /* Hash marks down the center */
-        .hash-marks {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: repeating-linear-gradient(
-                to bottom,
-                transparent 0px,
-                transparent 18px,
-                rgba(255, 255, 255, 0.6) 18px,
-                rgba(255, 255, 255, 0.6) 22px,
-                transparent 22px,
-                transparent 40px
-            );
-            transform: translateX(-50%);
-        }
 
         /* ============================================
            FORMATION CONTAINER
@@ -128,14 +99,14 @@
 
         /* Offense players - Orange (Cincinnati Bengals colors) */
         .player.offense {
-            background: linear-gradient(145deg, #FF6600, #E55A00);
+            background: linear-gradient(145deg, #FF6600, #FB4F14);
             border-color: #000;
         }
 
         /* Defense players - Black with orange border */
         .player.defense {
             background: linear-gradient(145deg, #000000, #333333);
-            border-color: #FF6600;
+            border-color: #FB4F14;
         }
 
         /* Hover effects */
@@ -160,15 +131,15 @@
         
         /* OFFENSE - Shotgun Formation */
         .qb   { top: 65%; left: 50%; } /* Quarterback in pocket */
-        .rb   { top: 62%; left: 35%; } /* Running back offset left */
-        .wr1  { top: 55%; left: 8%;  } /* Wide receiver - split end left */
-        .wr2  { top: 55%; left: 92%; } /* Wide receiver - split end right */
-        .wr3  { top: 58%; left: 18%; } /* Wide receiver - slot left */
-        .te   { top: 52%; left: 78%; } /* Tight end right side */
+        .rb   { top: 64%; left: 40%; } /* Running back offset left */
+        .wr1  { top: 52%; left: 6%;  } /* Wide receiver - split end left */
+        .wr2  { top: 55%; left: 94%; } /* Wide receiver - split end right */
+        .wr3  { top: 55%; left: 15%; } /* Wide receiver - slot left */
+        .te   { top: 52%; left: 81%; } /* Tight end right side */
         .lt   { top: 52%; left: 28%; } /* Left tackle */
-        .lg   { top: 52%; left: 38%; } /* Left guard */
+        .lg   { top: 52%; left: 39%; } /* Left guard */
         .c    { top: 52%; left: 50%; } /* Center */
-        .rg   { top: 52%; left: 62%; } /* Right guard */
+        .rg   { top: 52%; left: 61%; } /* Right guard */
         .rt   { top: 52%; left: 72%; } /* Right tackle */
 
         /* DEFENSE - 4-3 Formation */
