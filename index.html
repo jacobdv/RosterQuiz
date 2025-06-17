@@ -37,7 +37,7 @@
 
         /* ============================================
            FIELD MARKINGS - White Lines
-           ============================================ *
+           ============================================ */
         /* Horizontal yard lines every 10 yards */
         .yard-line {
             position: absolute;
@@ -159,12 +159,14 @@
            PLAYER INFO PANEL
            ============================================ */
         .player-panel {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
-            height: 76%;
+            width: 90%;
+            max-width: 500px;
+            height: 80%;
+            max-height: 600px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
@@ -207,8 +209,9 @@
         }
 
         .player-image {
-            width: 360px;
-            height: 360px;
+            width: 60%;
+            aspect-ratio: 1;
+            max-width: 360px;
             border-radius: 50%;
             border: 4px solid #FF6600;
             margin-bottom: 15px;
@@ -304,11 +307,11 @@
 
         @keyframes spinIn {
             from {
-                transform: scale(0) rotate(180deg);
+                transform: translate(-50%, -50%) scale(0) rotate(180deg);
                 opacity: 0;
             }
             to {
-                transform: scale(1) rotate(0deg);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
                 opacity: 1;
             }
         }
@@ -328,24 +331,53 @@
             }
             
             .player-panel {
-                width: 80%;
-                height: 76%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                top:10%; 
-                left:12%;
+                width: 95%;
+                height: 85%;
             }
             
             .player-image {
-                width: 300px;
-                height: 300px;
+                width: 70%;
                 font-size: 36px;
+            }
+            
+            .player-name {
+                font-size: 24px;
+            }
+            
+            .player-number {
+                font-size: 20px;
+            }
+            
+            .player-position {
+                font-size: 16px;
             }
             
             .title {
                 font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .player-panel {
+                width: 98%;
+                height: 90%;
+            }
+            
+            .player-image {
+                width: 80%;
+                font-size: 32px;
+            }
+            
+            .player-name {
+                font-size: 20px;
+            }
+            
+            .player-number {
+                font-size: 18px;
+            }
+            
+            .player-position {
+                font-size: 14px;
             }
         }
     </style>
@@ -596,7 +628,7 @@
                     const playerInfo = playerData[playerId];
                     
                     if (playerInfo) {
-                        showPlayerPanel(playerInfo, e.clientX, e.clientY);
+                        showPlayerPanel(playerInfo);
                     }
                 });
             });
@@ -608,7 +640,7 @@
         /* ============================================
            PLAYER PANEL FUNCTIONS
            ============================================ */
-        function showPlayerPanel(playerInfo, x, y) {
+        function showPlayerPanel(playerInfo) {
             // Remove existing panel if any
             if (currentPanel) {
                 currentPanel.remove();
@@ -617,13 +649,6 @@
             // Create new panel
             const panel = document.createElement('div');
             panel.className = 'player-panel animating';
-            
-            // Position panel at center of screen
-            const centerX = window.innerWidth / 2 - 125;  // 125 = half panel width
-            const centerY = window.innerHeight / 2 - 150; // 150 = half panel height
-            
-            panel.style.left = x + 'px';
-            panel.style.top = y + 'px';
             
             // Create panel content
             panel.innerHTML = `
@@ -650,13 +675,6 @@
             // Show overlay
             document.getElementById('overlay').classList.add('active');
 
-            // Animate to center
-            setTimeout(() => {
-                panel.style.left = centerX + 'px';
-                panel.style.top = centerY + 'px';
-                panel.classList.remove('animating');
-            }, 50);
-
             // Add click handlers
             panel.addEventListener('click', function(e) {
                 if (e.target.classList.contains('close-btn')) {
@@ -676,7 +694,7 @@
 
         function closePanel() {
             if (currentPanel) {
-                currentPanel.style.transform = 'scale(0) rotate(180deg)';
+                currentPanel.style.transform = 'translate(-50%, -50%) scale(0) rotate(180deg)';
                 currentPanel.style.opacity = '0';
                 document.getElementById('overlay').classList.remove('active');
                 
