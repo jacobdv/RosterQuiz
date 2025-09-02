@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bengals Roster Quiz</title>
+    <title>Cincinnati Bengals Depth Chart</title>
+    <link rel="manifest" href="#" id="manifest-placeholder">
+    <meta name="theme-color" content="#FF6600">
     <style>
-        /* ============================================
-           GLOBAL STYLES
-           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -16,711 +15,683 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #FF6600 0%, #000000 100%);
+            background: linear-gradient(135deg, #FF6600, #000000);
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: auto;
         }
 
-        /* ============================================
-           FOOTBALL FIELD CONTAINER
-           ============================================ */
+        .header {
+            background: linear-gradient(90deg, #FF6600, #000000);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .personnel-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #FF6600, #FF8833);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .personnel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .personnel-btn.active {
+            background: linear-gradient(45deg, #000000, #333333);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
         .field-container {
-            width: 100vw;
-            height: 100vh;
-            background: #60b922; /* Simple light green field background */
             position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: linear-gradient(180deg, #2E8B57, #228B22);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .football-field {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            min-height: 600px;
+            background: linear-gradient(
+                to bottom,
+                #2E8B57 0%,
+                #228B22 45%,
+                #FFD700 47%,
+                #FFFFFF 48%,
+                #FFD700 49%,
+                #FFFFFF 50%,
+                #FFD700 51%,
+                #FFFFFF 52%,
+                #FFD700 53%,
+                #228B22 55%,
+                #2E8B57 100%
+            );
+        }
+
+        .field-line {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: white;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .offense-side, .defense-side {
+            position: absolute;
+            width: 100%;
+            height: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
-        /* ============================================
-           FIELD MARKINGS - White Lines
-           ============================================ */
-        /* Horizontal yard lines every 10 yards */
-        .yard-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: white;
-            left: 0;
+        .offense-side {
+            bottom: 0;
+            background: rgba(34, 139, 34, 0.1);
         }
 
-        .yard-line.goal-line { height: 4px; background: white; } /* Thicker goal lines */
-        .yard-line.fifty { height: 3px; background: white; } /* Thicker 50-yard line */
-
-        /* Sidelines at top and bottom */
-        .sideline {
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background: white;
-            left: 0;
+        .defense-side {
+            top: 0;
+            background: rgba(46, 139, 87, 0.1);
         }
 
-        .sideline.top { top: 0; }
-        .sideline.bottom { bottom: 0; }
-
-        /* ============================================
-           FORMATION CONTAINER
-           ============================================ */
         .formation {
             position: relative;
             width: 90%;
-            max-width: 800px;
             height: 80%;
-            max-height: 600px;
-            z-index: 10;
         }
 
-        /* ============================================
-           PLAYER CIRCLES
-           ============================================ */
         .player {
             position: absolute;
-            width: 45px;
-            height: 45px;
-            border: 3px solid #000;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FF6600, #FF8833);
+            border: 4px solid #000000;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 10;
-            transform: translate(-50%, -50%); /* Center the circle on its position */
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+            font-weight: bold;
+            font-size: 16px;
+            color: #000000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
-        /* Offense players - Orange (Cincinnati Bengals colors) */
-        .player.offense {
-            background: linear-gradient(145deg, #FF6600, #FB4F14);
-            border-color: #000;
-        }
-
-        /* Defense players - Black with orange border */
         .player.defense {
-            background: linear-gradient(145deg, #000000, #333333);
-            border-color: #FB4F14;
+            background: linear-gradient(135deg, #000000, #333333);
+            border: 4px solid #FF6600;
+            color: #FF6600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* Hover effects */
         .player:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .player.offense:hover {
-            box-shadow: 0 6px 20px rgba(255,102,0,0.5);
+            transform: scale(1.2);
+            box-shadow: 0 6px 25px rgba(255, 102, 0, 0.6);
+            z-index: 10;
         }
 
         .player.defense:hover {
-            box-shadow: 0 6px 20px rgba(255,102,0,0.7);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
         }
 
-        /* ============================================
-           PLAYER POSITIONS - EDIT THESE TO CHANGE FORMATION
-           Line of Scrimmage = 50%
-           Offense = 52% and below (attacking upward)
-           Defense = 48% and above (defending downward)
-           ============================================ */
-        
-        /* OFFENSE - Shotgun Formation */
-        .qb   { top: 67%; left: 50%; } /* Quarterback in pocket */
-        .rb   { top: 66%; left: 40%; } /* Running back offset left */
-        .wr1  { top: 54%; left: 5%;  } /* Wide receiver - split end left */
-        .wr2  { top: 57%; left: 95%; } /* Wide receiver - split end right */
-        .wr3  { top: 57%; left: 15%; } /* Wide receiver - slot left */
-        .te   { top: 54%; left: 85%; } /* Tight end right side */
-        .lt   { top: 54%; left: 30%; } /* Left tackle */
-        .lg   { top: 54%; left: 40%; } /* Left guard */
-        .c    { top: 54%; left: 50%; } /* Center */
-        .rg   { top: 54%; left: 60%; } /* Right guard */
-        .rt   { top: 54%; left: 70%; } /* Right tackle */
-
-        /* DEFENSE - 4-3 Formation */
-        .lde  { top: 46%; left: 26%; } /* Left defensive end */
-        .dt   { top: 46%; left: 42%; } /* Defensive tackle */
-        .nt   { top: 46%; left: 58%; } /* Nose tackle */
-        .rde  { top: 46%; left: 74%; } /* Right defensive end */
-        .mlb  { top: 35%; left: 50%; } /* Middle linebacker */
-        .olb1 { top: 39%; left: 18%; } /* Outside linebacker left */
-        .olb2 { top: 39%; left: 82%; } /* Outside linebacker right */
-        .cb1  { top: 30%; left: 5%;  } /* Cornerback left */
-        .cb2  { top: 30%; left: 95%; } /* Cornerback right */
-        .saf1 { top: 20%; left: 28%; } /* Strong safety */
-        .saf2 { top: 16%;  left: 72%; } /* Free safety */
-
-        /* ============================================
-           PLAYER INFO PANEL
-           ============================================ */
-        .player-panel {
+        .modal {
+            display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #FFFFFF, #F5F5F5);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
             width: 90%;
             max-width: 500px;
-            height: 80%;
-            max-height: 600px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transform-style: preserve-3d;
-            transition: transform 0.6s ease;
-            cursor: pointer;
-            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
         }
 
-        .panel-front, .panel-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .panel-back {
-            background: linear-gradient(145deg, #FF6600, #FB4F14);
+        .modal-header {
+            background: linear-gradient(90deg, #FF6600, #000000);
             color: white;
-            transform: rotateY(180deg);
-        }
-
-        .panel-front {
-            background: white;
-        }
-
-        .player-panel.flipped .panel-front {
-            transform: rotateY(180deg);
-        }
-
-        .player-panel.flipped .panel-back {
-            transform: rotateY(0deg);
-        }
-
-        .player-image {
-            width: 60%;
-            aspect-ratio: 1;
-            max-width: 360px;
-            border-radius: 50%;
-            border: 4px solid #FF6600;
-            margin-bottom: 15px;
-            background: linear-gradient(145deg, #f0f0f0, #ddd);
+            padding: 20px;
+            margin: -30px -30px 20px -30px;
+            border-radius: 20px 20px 0 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #FF6600;
-            font-weight: bold;
-            overflow: hidden;
+            gap: 15px;
         }
 
-        .player-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .player-headshot {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+            background: #f0f0f0;
         }
 
-        .player-details {
-            text-align: center;
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .player-number {
-            font-size: 24px;
+        .player-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: #F8F8F8;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #FF6600;
+        }
+
+        .info-label {
             font-weight: bold;
-            color: #FF6600;
+            color: #000000;
+            font-size: 0.9rem;
             margin-bottom: 5px;
         }
 
-        .player-position {
-            font-size: 18px;
-            color: #666;
-            font-weight: 500;
+        .info-value {
+            color: #333;
+            font-size: 1.1rem;
         }
 
-        .player-name {
+        .close {
+            color: white;
+            float: right;
             font-size: 28px;
             font-weight: bold;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 24px;
             cursor: pointer;
-            color: #999;
-            z-index: 10;
+            line-height: 1;
         }
 
-        .close-btn:hover {
-            color: #FF6600;
+        .close:hover {
+            opacity: 0.7;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .overlay.active {
-            opacity: 1;
-            pointer-events: all;
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        /* ============================================
-           TITLE AND ANIMATIONS
-           ============================================ */
-        .title {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            z-index: 5;
-        }
-
-        @keyframes spinIn {
-            from {
-                transform: translate(-50%, -50%) scale(0) rotate(180deg);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, -50%) scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        .player-panel.animating {
-            animation: spinIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        /* ============================================
-           MOBILE RESPONSIVE
-           ============================================ */
         @media (max-width: 768px) {
-            .player {
-                width: 38px;
-                height: 38px;
-                font-size: 12px;
+            .header h1 {
+                font-size: 2rem;
             }
-            
-            .player-panel {
-                width: 95%;
-                height: 85%;
-            }
-            
-            .player-image {
-                width: 70%;
-                font-size: 36px;
-            }
-            
-            .player-name {
-                font-size: 24px;
-            }
-            
-            .player-number {
-                font-size: 20px;
-            }
-            
-            .player-position {
-                font-size: 16px;
-            }
-            
-            .title {
-                font-size: 20px;
-            }
-        }
 
-        @media (max-width: 480px) {
-            .player-panel {
-                width: 98%;
-                height: 90%;
+            .controls {
+                gap: 10px;
             }
-            
-            .player-image {
-                width: 80%;
-                font-size: 32px;
+
+            .personnel-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
             }
-            
-            .player-name {
-                font-size: 20px;
-            }
-            
-            .player-number {
-                font-size: 18px;
-            }
-            
-            .player-position {
+
+            .player {
+                width: 50px;
+                height: 50px;
                 font-size: 14px;
+            }
+
+            .modal-content {
+                margin: 20% auto;
+                width: 95%;
+                padding: 20px;
+            }
+
+            .player-info {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Page Title -->
-    <!-- <div class="title">Cincinnati Bengals - 3rd & 7</div> -->
-    
-    <!-- Football Field Container -->
-    <div class="field-container">
-        <!-- Field Markings -->
-        <div class="field-markings">
-            <!-- Sidelines -->
-            <div class="sideline top"></div>
-            <div class="sideline bottom"></div>
-            
-            <!-- Yard Lines (every 10 yards) -->
-            <div class="yard-line goal-line" style="top: 9%;"></div>   <!-- Goal line -->
-            <div class="yard-line" style="top: 19%;"></div>           <!-- 10 yard -->
-            <div class="yard-line" style="top: 29%;"></div>           <!-- 20 yard -->
-            <div class="yard-line" style="top: 39%;"></div>           <!-- 30 yard -->
-            <div class="yard-line fifty" style="top: 50%;"></div>     <!-- 50 yard (line of scrimmage) -->
-            <div class="yard-line" style="top: 61%;"></div>           <!-- 30 yard -->
-            <div class="yard-line" style="top: 71%;"></div>           <!-- 20 yard -->
-            <div class="yard-line" style="top: 81%;"></div>           <!-- 10 yard -->
-            <div class="yard-line goal-line" style="top: 91%;"></div> <!-- Goal line -->
-            
-            <!-- Hash Marks -->
-            <div class="hash-marks"></div>
-        </div>
-
-        <!-- Player Formation Container -->
-        <div class="formation">
-            <!-- OFFENSE - Cincinnati Bengals (Orange circles) -->
-            <div class="player offense qb" data-player="burrow">9</div>     <!-- Joe Burrow -->
-            <div class="player offense rb" data-player="brown">30</div>     <!-- Chase Brown -->
-            <div class="player offense wr1" data-player="chase">1</div>     <!-- Ja'Marr Chase -->
-            <div class="player offense wr2" data-player="higgins">5</div>   <!-- Tee Higgins -->
-            <div class="player offense wr3" data-player="iosivas">15</div>  <!-- Andrei Iosivas -->
-            <div class="player offense te" data-player="gesicki">88</div>   <!-- Mike Gesicki -->
-            <div class="player offense lt" data-player="brownJr">71</div>   <!-- Orlando Brown Jr -->
-            <div class="player offense lg" data-player="volson">67</div>    <!-- Cordell Volson -->
-            <div class="player offense c" data-player="karras">64</div>     <!-- Ted Karras -->
-            <div class="player offense rg" data-player="fairchild">73</div> <!-- Dylan Fairchild -->
-            <div class="player offense rt" data-player="mims">79</div>      <!-- Amarius Mims -->
-            
-            <!-- DEFENSE - Opposition (Black circles with orange border) -->
-            <div class="player defense lde" data-player="hendrickson">91</div>  <!-- Trey Hendrickson -->
-            <div class="player defense dt" data-player="hill">92</div>          <!-- B.J. Hill -->
-            <div class="player defense nt" data-player="slaton">98</div>        <!-- T.J. Slaton Jr -->
-            <div class="player defense rde" data-player="stewart">99</div>      <!-- Shemar Stewart -->
-            <div class="player defense mlb" data-player="wilson">55</div>       <!-- Logan Wilson -->
-            <div class="player defense olb1" data-player="knight">57</div>      <!-- Demetrius Knight Jr -->
-            <div class="player defense olb2" data-player="burks">42</div>       <!-- Oren Burks -->
-            <div class="player defense cb1" data-player="taylorBritt">29</div>  <!-- Cam Taylor-Britt -->
-            <div class="player defense cb2" data-player="newton">24</div>       <!-- Josh Newton -->
-            <div class="player defense saf1" data-player="stone">22</div>       <!-- Geno Stone -->
-            <div class="player defense saf2" data-player="battle">27</div>      <!-- Jordan Battle -->
+    <div class="header">
+        <h1>🏈 Cincinnati Bengals Depth Chart</h1>
+        <div class="controls">
+            <button class="personnel-btn active" data-package="11-personnel">11 Personnel</button>
+            <button class="personnel-btn" data-package="12-personnel">12 Personnel</button>
+            <button class="personnel-btn" data-package="4-3-defense">4-3 Defense</button>
+            <button class="personnel-btn" data-package="nickel-defense">Nickel Defense</button>
         </div>
     </div>
 
-    <!-- Modal Overlay -->
-    <div class="overlay" id="overlay"></div>
+    <div class="field-container">
+        <div class="football-field">
+            <div class="field-line"></div>
+            <div class="defense-side">
+                <div class="formation" id="defense-formation"></div>
+            </div>
+            <div class="offense-side">
+                <div class="formation" id="offense-formation"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <img id="playerHeadshot" class="player-headshot" src="" alt="Player headshot" />
+                <h2 id="playerName"></h2>
+            </div>
+            <div class="player-info">
+                <div class="info-item">
+                    <div class="info-label">Position</div>
+                    <div class="info-value" id="playerPosition"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">College</div>
+                    <div class="info-value" id="playerCollege"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Height</div>
+                    <div class="info-value" id="playerHeight"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Weight</div>
+                    <div class="info-value" id="playerWeight"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        /* ============================================
-           PLAYER DATABASE
-           Edit this object to change player information
-           ============================================ */
+        // Player data (Updated 2025 Cincinnati Bengals roster from official depth chart)
         const playerData = {
-            // OFFENSE - Cincinnati Bengals
-            burrow: { 
-                name: "Joe Burrow", 
-                number: "9", 
-                position: "QB",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3915511.png&w=350&h=254"
+            offense: {
+                QB: { name: "Joe Burrow", college: "LSU", position: "QB", height: "6'4\"", weight: "221 lbs", number: "9", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3915511.png" },
+                RB1: { name: "Chase Brown", college: "Illinois", position: "RB", height: "5'9\"", weight: "209 lbs", number: "30", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870160.png" },
+                WR1: { name: "Ja'Marr Chase", college: "LSU", position: "WR", height: "6'0\"", weight: "201 lbs", number: "1", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426515.png" },
+                WR2: { name: "Tee Higgins", college: "Clemson", position: "WR", height: "6'4\"", weight: "219 lbs", number: "85", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4242335.png" },
+                WR3: { name: "Andrei Iosivas", college: "Princeton", position: "WR", height: "6'3\"", weight: "205 lbs", number: "17", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870156.png" },
+                TE1: { name: "Mike Gesicki", college: "Penn State", position: "TE", height: "6'5\"", weight: "247 lbs", number: "88", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3121873.png" },
+                TE2: { name: "Drew Sample", college: "Washington", position: "TE", height: "6'5\"", weight: "255 lbs", number: "89", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3929876.png" },
+                LT: { name: "Orlando Brown Jr.", college: "Oklahoma", position: "LT", height: "6'8\"", weight: "345 lbs", number: "75", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3120320.png" },
+                LG: { name: "Dylan Fairchild", college: "Georgia", position: "LG", height: "6'4\"", weight: "305 lbs", number: "79", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111732.png" },
+                C: { name: "Ted Karras", college: "Illinois", position: "C", height: "6'4\"", weight: "305 lbs", number: "64", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2577650.png" },
+                RG: { name: "Lucas Patrick", college: "Duke", position: "RG", height: "6'3\"", weight: "313 lbs", number: "72", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2977985.png" },
+                RT: { name: "Amarius Mims", college: "Georgia", position: "RT", height: "6'7\"", weight: "330 lbs", number: "76", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111714.png" }
             },
-            brown: { 
-                name: "Chase Brown", 
-                number: "30", 
-                position: "RB",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4362238.png&w=350&h=254"
-            },
-            chase: { 
-                name: "Ja'Marr Chase", 
-                number: "1", 
-                position: "WR",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4362628.png&w=350&h=254"
-            },
-            higgins: { 
-                name: "Tee Higgins", 
-                number: "5", 
-                position: "WR",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4239993.png"
-            },
-            iosivas: { 
-                name: "Andrei Iosivas", 
-                number: "15", 
-                position: "WR",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4368003.png&w=350&h=254"
-            },
-            gesicki: { 
-                name: "Mike Gesicki", 
-                number: "88", 
-                position: "TE",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3116164.png&w=350&h=254"
-            },
-            brownJr: { 
-                name: "Orlando Brown Jr.", 
-                number: "71", 
-                position: "LT",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3116370.png&w=350&h=254"
-            },
-            volson: { 
-                name: "Cordell Volson", 
-                number: "67", 
-                position: "LG",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4040950.png&w=350&h=254"
-            },
-            karras: { 
-                name: "Ted Karras", 
-                number: "64", 
-                position: "C",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/2576188.png&w=350&h=254"
-            },
-            fairchild: { 
-                name: "Dylan Fairchild", 
-                number: "73", 
-                position: "RG",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4646773.png&w=350&h=254"
-            },
-            mims: { 
-                name: "Amarius Mims", 
-                number: "79", 
-                position: "RT",
-                side: "offense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4431571.png&w=350&h=254"
-            },
-
-            // DEFENSE - Opposition
-            hendrickson: {
-                name: "Trey Hendrickson",
-                number: "91",
-                position: "LDE",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3052743.png&w=350&h=254"
-            },
-            hill: {
-                name: "B.J. Hill",
-                number: "92",
-                position: "DT",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3116748.png&w=350&h=254"
-            },
-            slaton: {
-                name: "T.J. Slaton Jr.",
-                number: "98",
-                position: "NT",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4240612.png&w=350&h=254"
-            },
-            stewart: {
-                name: "Shemar Stewart",
-                number: "99",
-                position: "RDE",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4685562.png&w=350&h=254"
-            },
-            wilson: {
-                name: "Logan Wilson",
-                number: "55",
-                position: "MLB",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3918330.png&w=350&h=254"
-            },
-            knight: {
-                name: "Demetrius Knight Jr.",
-                number: "57",
-                position: "OLB",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4427729.png&w=350&h=254"
-            },
-            burks: {
-                name: "Oren Burks",
-                number: "42",
-                position: "OLB",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3051746.png&w=350&h=254"
-            },
-            taylorBritt: {
-                name: "Cam Taylor-Britt",
-                number: "29",
-                position: "CB",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4361196.png&w=350&h=254"
-            },
-            newton: {
-                name: "Josh Newton",
-                number: "24",
-                position: "CB",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4365319.png&w=350&h=254"
-            },
-            stone: {
-                name: "Geno Stone",
-                number: "22",
-                position: "SAF",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4240575.png&w=350&h=254"
-            },
-            battle: {
-                name: "Jordan Battle",
-                number: "27",
-                position: "SAF",
-                side: "defense",
-                imageUrl: "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4567098.png&w=350&h=254"
+            defense: {
+                DE1: { name: "Joseph Ossai", college: "Texas", position: "DE", height: "6'4\"", weight: "253 lbs", number: "58", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426444.png" },
+                DE2: { name: "Trey Hendrickson", college: "Florida Atlantic", position: "DE", height: "6'4\"", weight: "270 lbs", number: "91", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2970470.png" },
+                DT1: { name: "B.J. Hill", college: "NC State", position: "DT", height: "6'3\"", weight: "311 lbs", number: "92", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3122169.png" },
+                DT2: { name: "T.J. Slaton Jr.", college: "Florida", position: "DT", height: "6'4\"", weight: "330 lbs", number: "98", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426419.png" },
+                LB1: { name: "Logan Wilson", college: "Wyoming", position: "LB", height: "6'2\"", weight: "241 lbs", number: "55", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4035276.png" },
+                LB2: { name: "Demetrius Knight Jr.", college: "Duke", position: "LB", height: "6'1\"", weight: "240 lbs", number: "44", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111686.png" },
+                LB3: { name: "Barrett Carter", college: "Clemson", position: "LB", height: "6'1\"", weight: "227 lbs", number: "49", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111688.png" },
+                CB1: { name: "DJ Turner II", college: "Michigan", position: "CB", height: "5'11\"", weight: "182 lbs", number: "20", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870139.png" },
+                CB2: { name: "Cam Taylor-Britt", college: "Nebraska", position: "CB", height: "5'11\"", weight: "196 lbs", number: "29", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426565.png" },
+                CB3: { name: "Dax Hill", college: "Michigan", position: "CB", height: "6'1\"", weight: "191 lbs", number: "23", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426452.png" },
+                S1: { name: "Geno Stone", college: "Iowa", position: "S", height: "5'11\"", weight: "207 lbs", number: "22", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4035251.png" },
+                S2: { name: "Jordan Battle", college: "Alabama", position: "S", height: "5'11\"", weight: "210 lbs", number: "27", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870117.png" },
+                S3: { name: "Tycen Anderson", college: "Toledo", position: "S", height: "6'2\"", weight: "202 lbs", number: "26", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4242384.png" }
             }
         };
 
-        /* ============================================
-           GLOBAL VARIABLES
-           ============================================ */
-        let currentPanel = null;
-        let isFlipped = false;
-
-        /* ============================================
-           INITIALIZATION
-           ============================================ */
-        document.addEventListener('DOMContentLoaded', function() {
-            const players = document.querySelectorAll('.player');
-            const overlay = document.getElementById('overlay');
-
-            // Add click listeners to all player circles
-            players.forEach(player => {
-                player.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const playerId = this.dataset.player;
-                    const playerInfo = playerData[playerId];
-                    
-                    if (playerInfo) {
-                        showPlayerPanel(playerInfo);
-                    }
-                });
-            });
-
-            // Close panel when clicking overlay
-            overlay.addEventListener('click', closePanel);
-        });
-
-        /* ============================================
-           PLAYER PANEL FUNCTIONS
-           ============================================ */
-        function showPlayerPanel(playerInfo) {
-            // Remove existing panel if any
-            if (currentPanel) {
-                currentPanel.remove();
+        // Formation configurations - positioned relative to 50-yard line with no overlaps
+        const formations = {
+            '11-personnel': {
+                offense: {
+                    QB: { x: 50, y: 15 },  // Closest to 50-yard line
+                    RB1: { x: 35, y: 30 },
+                    WR1: { x: 5, y: 75 }, // Far from 50-yard line
+                    WR2: { x: 95, y: 75 },
+                    WR3: { x: 15, y: 55 },
+                    TE1: { x: 78, y: 25 },
+                    LT: { x: 20, y: 20 },
+                    LG: { x: 32, y: 20 },
+                    C: { x: 50, y: 20 },
+                    RG: { x: 68, y: 20 },
+                    RT: { x: 80, y: 20 }
+                },
+                defense: {
+                    DE1: { x: 15, y: 75 }, // Far from 50-yard line
+                    DT1: { x: 35, y: 75 },
+                    DT2: { x: 65, y: 75 },
+                    DE2: { x: 85, y: 75 },
+                    LB1: { x: 25, y: 50 },
+                    LB2: { x: 50, y: 50 },
+                    LB3: { x: 75, y: 50 },
+                    CB1: { x: 5, y: 20 }, // Close to 50-yard line
+                    CB2: { x: 95, y: 20 },
+                    S1: { x: 30, y: 15 },
+                    S2: { x: 70, y: 15 }
+                }
+            },
+            '12-personnel': {
+                offense: {
+                    QB: { x: 50, y: 15 },
+                    RB1: { x: 35, y: 30 },
+                    WR1: { x: 5, y: 75 },
+                    WR2: { x: 95, y: 75 },
+                    TE1: { x: 83, y: 25 },
+                    TE2: { x: 17, y: 25 },
+                    LT: { x: 25, y: 20 },
+                    LG: { x: 37, y: 20 },
+                    C: { x: 50, y: 20 },
+                    RG: { x: 63, y: 20 },
+                    RT: { x: 75, y: 20 }
+                },
+                defense: {
+                    DE1: { x: 15, y: 75 },
+                    DT1: { x: 35, y: 75 },
+                    DT2: { x: 65, y: 75 },
+                    DE2: { x: 85, y: 75 },
+                    LB1: { x: 25, y: 50 },
+                    LB2: { x: 50, y: 50 },
+                    LB3: { x: 75, y: 50 },
+                    CB1: { x: 5, y: 20 },
+                    CB2: { x: 95, y: 20 },
+                    S1: { x: 30, y: 15 },
+                    S2: { x: 70, y: 15 }
+                }
+            },
+            '4-3-defense': {
+                offense: {
+                    QB: { x: 50, y: 15 },
+                    RB1: { x: 35, y: 30 },
+                    WR1: { x: 5, y: 75 },
+                    WR2: { x: 95, y: 75 },
+                    WR3: { x: 15, y: 55 },
+                    TE1: { x: 78, y: 25 },
+                    LT: { x: 20, y: 20 },
+                    LG: { x: 32, y: 20 },
+                    C: { x: 50, y: 20 },
+                    RG: { x: 68, y: 20 },
+                    RT: { x: 80, y: 20 }
+                },
+                defense: {
+                    DE1: { x: 15, y: 75 },
+                    DT1: { x: 35, y: 75 },
+                    DT2: { x: 65, y: 75 },
+                    DE2: { x: 85, y: 75 },
+                    LB1: { x: 25, y: 50 },
+                    LB2: { x: 50, y: 50 },
+                    LB3: { x: 75, y: 50 },
+                    CB1: { x: 5, y: 20 },
+                    CB2: { x: 95, y: 20 },
+                    S1: { x: 30, y: 15 },
+                    S2: { x: 70, y: 15 }
+                }
+            },
+            'nickel-defense': {
+                offense: {
+                    QB: { x: 50, y: 15 },
+                    RB1: { x: 35, y: 30 },
+                    WR1: { x: 5, y: 75 },
+                    WR2: { x: 95, y: 75 },
+                    WR3: { x: 15, y: 55 },
+                    TE1: { x: 78, y: 25 },
+                    LT: { x: 20, y: 20 },
+                    LG: { x: 32, y: 20 },
+                    C: { x: 50, y: 20 },
+                    RG: { x: 68, y: 20 },
+                    RT: { x: 80, y: 20 }
+                },
+                defense: {
+                    DE1: { x: 15, y: 75 },
+                    DT1: { x: 35, y: 75 },
+                    DT2: { x: 65, y: 75 },
+                    DE2: { x: 85, y: 75 },
+                    LB1: { x: 35, y: 50 },
+                    LB2: { x: 65, y: 50 },
+                    CB1: { x: 5, y: 20 },
+                    CB2: { x: 95, y: 20 },
+                    CB3: { x: 25, y: 35 },
+                    S1: { x: 30, y: 15 },
+                    S2: { x: 70, y: 15 }
+                }
             }
+        };
 
-            // Create new panel
-            const panel = document.createElement('div');
-            panel.className = 'player-panel animating';
-            
-            // Create panel content
-            panel.innerHTML = `
-                <button class="close-btn">&times;</button>
-                <div class="panel-front">
-                    <div class="player-image">
-                        <img src="${playerInfo.imageUrl}" alt="${playerInfo.name}" 
-                             onerror="this.style.display='none'; this.parentNode.innerHTML='${playerInfo.number}';" />
-                    </div>
-                    <div class="player-details">
-                        <div class="player-number">#${playerInfo.number}</div>
-                        <div class="player-position">${playerInfo.position}</div>
-                    </div>
-                </div>
-                <div class="panel-back">
-                    <div class="player-name">${playerInfo.name}</div>
-                </div>
+        let currentPackage = '11-personnel';
+
+        // Create manifest data
+        const manifestData = {
+            name: "Cincinnati Bengals Depth Chart",
+            short_name: "Bengals Depth",
+            description: "Interactive depth chart for the Cincinnati Bengals NFL team",
+            start_url: "./",
+            display: "standalone",
+            background_color: "#FF6600",
+            theme_color: "#FF6600",
+            icons: [
+                {
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle fill='%23FF6600' cx='96' cy='96' r='96'/%3E%3Ctext x='96' y='110' text-anchor='middle' font-size='80' font-weight='bold' fill='%23000000'%3EB%3C/text%3E%3C/svg%3E",
+                    sizes: "192x192",
+                    type: "image/svg+xml"
+                },
+                {
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle fill='%23FF6600' cx='256' cy='256' r='256'/%3E%3Ctext x='256' y='300' text-anchor='middle' font-size='200' font-weight='bold' fill='%23000000'%3EB%3C/text%3E%3C/svg%3E",
+                    sizes: "512x512",
+                    type: "image/svg+xml"
+                }
+            ]
+        };
+
+        // Create and inject manifest
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest-placeholder').href = manifestURL;
+
+        // Service Worker registration with inline approach
+        if ('serviceWorker' in navigator) {
+            // Create service worker as a data URL instead of blob
+            const swCode = `
+                const CACHE_NAME = 'bengals-depth-chart-v1';
+                
+                // Cache key resources
+                const resourcesToCache = [];
+
+                self.addEventListener('install', event => {
+                    console.log('Service Worker: Installing');
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                console.log('Service Worker: Caching files');
+                                // Cache the current page
+                                return cache.add('./');
+                            })
+                            .catch(err => console.log('Service Worker: Cache failed', err))
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('activate', event => {
+                    console.log('Service Worker: Activating');
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                            return Promise.all(
+                                cacheNames.map(cache => {
+                                    if (cache !== CACHE_NAME) {
+                                        console.log('Service Worker: Clearing old cache');
+                                        return caches.delete(cache);
+                                    }
+                                })
+                            );
+                        })
+                    );
+                    self.clients.claim();
+                });
+
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                            .then(response => {
+                                // Return cached version or fetch from network
+                                return response || fetch(event.request);
+                            })
+                            .catch(() => {
+                                // Fallback for offline
+                                if (event.request.destination === 'document') {
+                                    return caches.match('./');
+                                }
+                            })
+                    );
+                });
             `;
 
-            document.body.appendChild(panel);
-            currentPanel = panel;
-            isFlipped = false;
+            // Use data URL instead of blob URL for better compatibility
+            const swDataURL = 'data:application/javascript;base64,' + btoa(swCode);
 
-            // Show overlay
-            document.getElementById('overlay').classList.add('active');
+            navigator.serviceWorker.register(swDataURL)
+                .then(registration => {
+                    console.log('✅ Service Worker registered successfully:', registration.scope);
+                    
+                    // Handle updates
+                    registration.addEventListener('updatefound', () => {
+                        console.log('Service Worker: Update found');
+                    });
+                })
+                .catch(error => {
+                    console.log('❌ Service Worker registration failed:', error);
+                    // Graceful fallback - app still works without SW
+                    console.log('App will continue to work, but without offline capabilities');
+                });
+        } else {
+            console.log('Service Worker not supported in this browser');
+        }
 
-            // Add click handlers
-            panel.addEventListener('click', function(e) {
-                if (e.target.classList.contains('close-btn')) {
-                    closePanel();
-                } else {
-                    flipPanel();
+        // App functionality
+        function createPlayer(playerKey, player, x, y, isDefense = false) {
+            const playerElement = document.createElement('div');
+            playerElement.className = isDefense ? 'player defense' : 'player';
+            playerElement.style.left = x + '%';
+            playerElement.style.top = y + '%';
+            playerElement.textContent = player.number;
+            playerElement.addEventListener('click', () => showPlayerModal(player));
+            return playerElement;
+        }
+
+        function renderFormation(packageName) {
+            const offenseContainer = document.getElementById('offense-formation');
+            const defenseContainer = document.getElementById('defense-formation');
+            
+            offenseContainer.innerHTML = '';
+            defenseContainer.innerHTML = '';
+
+            const formation = formations[packageName];
+
+            // Render offense
+            Object.entries(formation.offense).forEach(([key, position]) => {
+                const player = playerData.offense[key];
+                if (player) {
+                    const playerElement = createPlayer(key, player, position.x, position.y, false);
+                    offenseContainer.appendChild(playerElement);
+                }
+            });
+
+            // Render defense
+            Object.entries(formation.defense).forEach(([key, position]) => {
+                const player = playerData.defense[key];
+                if (player) {
+                    const playerElement = createPlayer(key, player, position.x, position.y, true);
+                    defenseContainer.appendChild(playerElement);
                 }
             });
         }
 
-        function flipPanel() {
-            if (currentPanel) {
-                isFlipped = !isFlipped;
-                currentPanel.classList.toggle('flipped');
-            }
+        function showPlayerModal(player) {
+            document.getElementById('playerName').textContent = player.name;
+            document.getElementById('playerPosition').textContent = player.position;
+            document.getElementById('playerCollege').textContent = player.college;
+            document.getElementById('playerHeight').textContent = player.height;
+            document.getElementById('playerWeight').textContent = player.weight;
+            
+            // Set player headshot with fallback
+            const headshotImg = document.getElementById('playerHeadshot');
+            headshotImg.src = player.headshot;
+            headshotImg.onerror = function() {
+                this.style.display = 'none';
+            };
+            headshotImg.onload = function() {
+                this.style.display = 'block';
+            };
+            
+            document.getElementById('playerModal').style.display = 'block';
         }
 
-        function closePanel() {
-            if (currentPanel) {
-                currentPanel.style.transform = 'translate(-50%, -50%) scale(0) rotate(180deg)';
-                currentPanel.style.opacity = '0';
-                document.getElementById('overlay').classList.remove('active');
-                
-                setTimeout(() => {
-                    if (currentPanel) {
-                        currentPanel.remove();
-                        currentPanel = null;
-                        isFlipped = false;
-                    }
-                }, 300);
-            }
+        function hidePlayerModal() {
+            document.getElementById('playerModal').style.display = 'none';
         }
 
-        /* ============================================
-           EVENT HANDLERS
-           ============================================ */
-        // Handle escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && currentPanel) {
-                closePanel();
-            }
+        // Event listeners
+        document.querySelectorAll('.personnel-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.personnel-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentPackage = e.target.dataset.package;
+                renderFormation(currentPackage);
+            });
         });
 
-        // Prevent context menu on mobile
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
+        document.querySelector('.close').addEventListener('click', hidePlayerModal);
+        document.getElementById('playerModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) hidePlayerModal();
+        });
+
+        // Initialize app
+        renderFormation(currentPackage);
+
+        // PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+            console.log('PWA install prompt available');
         });
     </script>
 </body>
