@@ -37,8 +37,27 @@
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 40px;
             flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .control-group .controls-row {
+            display: flex;
+            gap: 15px;
         }
 
         .personnel-btn {
@@ -301,10 +320,16 @@
     <div class="header">
         <h1>🏈 Cincinnati Bengals Depth Chart</h1>
         <div class="controls">
-            <button class="personnel-btn active" data-package="11-personnel">11 Personnel</button>
-            <button class="personnel-btn" data-package="12-personnel">12 Personnel</button>
-            <button class="personnel-btn" data-package="4-3-defense">4-3 Defense</button>
-            <button class="personnel-btn" data-package="nickel-defense">Nickel Defense</button>
+            <div class="control-group">
+                <h3>Offense</h3>
+                <button class="personnel-btn offense-btn active" data-package="11-personnel">11 Personnel</button>
+                <button class="personnel-btn offense-btn" data-package="12-personnel">12 Personnel</button>
+            </div>
+            <div class="control-group">
+                <h3>Defense</h3>
+                <button class="personnel-btn defense-btn active" data-package="4-3-defense">4-3 Defense</button>
+                <button class="personnel-btn defense-btn" data-package="nickel-defense">Nickel Defense</button>
+            </div>
         </div>
     </div>
 
@@ -349,36 +374,36 @@
     </div>
 
     <script>
-        // Player data (Updated 2025 Cincinnati Bengals roster from official depth chart)
+        // Player data (Updated 2025 Cincinnati Bengals roster with Bengals website headshots)
         const playerData = {
             offense: {
-                QB: { name: "Joe Burrow", college: "LSU", position: "QB", height: "6'4\"", weight: "221 lbs", number: "9", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3915511.png" },
-                RB1: { name: "Chase Brown", college: "Illinois", position: "RB", height: "5'9\"", weight: "209 lbs", number: "30", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870160.png" },
-                WR1: { name: "Ja'Marr Chase", college: "LSU", position: "WR", height: "6'0\"", weight: "201 lbs", number: "1", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426515.png" },
-                WR2: { name: "Tee Higgins", college: "Clemson", position: "WR", height: "6'4\"", weight: "219 lbs", number: "85", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4242335.png" },
-                WR3: { name: "Andrei Iosivas", college: "Princeton", position: "WR", height: "6'3\"", weight: "205 lbs", number: "17", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870156.png" },
-                TE1: { name: "Mike Gesicki", college: "Penn State", position: "TE", height: "6'5\"", weight: "247 lbs", number: "88", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3121873.png" },
-                TE2: { name: "Drew Sample", college: "Washington", position: "TE", height: "6'5\"", weight: "255 lbs", number: "89", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3929876.png" },
-                LT: { name: "Orlando Brown Jr.", college: "Oklahoma", position: "LT", height: "6'8\"", weight: "345 lbs", number: "75", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3120320.png" },
-                LG: { name: "Dylan Fairchild", college: "Georgia", position: "LG", height: "6'4\"", weight: "305 lbs", number: "79", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111732.png" },
-                C: { name: "Ted Karras", college: "Illinois", position: "C", height: "6'4\"", weight: "305 lbs", number: "64", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2577650.png" },
-                RG: { name: "Lucas Patrick", college: "Duke", position: "RG", height: "6'3\"", weight: "313 lbs", number: "72", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2977985.png" },
-                RT: { name: "Amarius Mims", college: "Georgia", position: "RT", height: "6'7\"", weight: "330 lbs", number: "76", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111714.png" }
+                QB: { name: "Joe Burrow", college: "LSU", position: "QB", height: "6'4\"", weight: "221 lbs", number: "9", headshot: "https://www.bengals.com/assets/img/headshots/burrow-joe.jpg" },
+                RB1: { name: "Chase Brown", college: "Illinois", position: "RB", height: "5'9\"", weight: "209 lbs", number: "30", headshot: "https://www.bengals.com/assets/img/headshots/brown-chase.jpg" },
+                WR1: { name: "Ja'Marr Chase", college: "LSU", position: "WR", height: "6'0\"", weight: "201 lbs", number: "1", headshot: "https://www.bengals.com/assets/img/headshots/chase-jamarr.jpg" },
+                WR2: { name: "Tee Higgins", college: "Clemson", position: "WR", height: "6'4\"", weight: "219 lbs", number: "85", headshot: "https://www.bengals.com/assets/img/headshots/higgins-tee.jpg" },
+                WR3: { name: "Andrei Iosivas", college: "Princeton", position: "WR", height: "6'3\"", weight: "205 lbs", number: "17", headshot: "https://www.bengals.com/assets/img/headshots/iosivas-andrei.jpg" },
+                TE1: { name: "Mike Gesicki", college: "Penn State", position: "TE", height: "6'5\"", weight: "247 lbs", number: "88", headshot: "https://www.bengals.com/assets/img/headshots/gesicki-mike.jpg" },
+                TE2: { name: "Drew Sample", college: "Washington", position: "TE", height: "6'5\"", weight: "255 lbs", number: "89", headshot: "https://www.bengals.com/assets/img/headshots/sample-drew.jpg" },
+                LT: { name: "Orlando Brown Jr.", college: "Oklahoma", position: "LT", height: "6'8\"", weight: "345 lbs", number: "75", headshot: "https://www.bengals.com/assets/img/headshots/brown-orlando.jpg" },
+                LG: { name: "Dylan Fairchild", college: "Georgia", position: "LG", height: "6'4\"", weight: "305 lbs", number: "79", headshot: "https://www.bengals.com/assets/img/headshots/fairchild-dylan.jpg" },
+                C: { name: "Ted Karras", college: "Illinois", position: "C", height: "6'4\"", weight: "305 lbs", number: "64", headshot: "https://www.bengals.com/assets/img/headshots/karras-ted.jpg" },
+                RG: { name: "Lucas Patrick", college: "Duke", position: "RG", height: "6'3\"", weight: "313 lbs", number: "72", headshot: "https://www.bengals.com/assets/img/headshots/patrick-lucas.jpg" },
+                RT: { name: "Amarius Mims", college: "Georgia", position: "RT", height: "6'7\"", weight: "330 lbs", number: "76", headshot: "https://www.bengals.com/assets/img/headshots/mims-amarius.jpg" }
             },
             defense: {
-                DE1: { name: "Joseph Ossai", college: "Texas", position: "DE", height: "6'4\"", weight: "253 lbs", number: "58", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426444.png" },
-                DE2: { name: "Trey Hendrickson", college: "Florida Atlantic", position: "DE", height: "6'4\"", weight: "270 lbs", number: "91", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/2970470.png" },
-                DT1: { name: "B.J. Hill", college: "NC State", position: "DT", height: "6'3\"", weight: "311 lbs", number: "92", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/3122169.png" },
-                DT2: { name: "T.J. Slaton Jr.", college: "Florida", position: "DT", height: "6'4\"", weight: "330 lbs", number: "98", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426419.png" },
-                LB1: { name: "Logan Wilson", college: "Wyoming", position: "LB", height: "6'2\"", weight: "241 lbs", number: "55", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4035276.png" },
-                LB2: { name: "Demetrius Knight Jr.", college: "Duke", position: "LB", height: "6'1\"", weight: "240 lbs", number: "44", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111686.png" },
-                LB3: { name: "Barrett Carter", college: "Clemson", position: "LB", height: "6'1\"", weight: "227 lbs", number: "49", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/5111688.png" },
-                CB1: { name: "DJ Turner II", college: "Michigan", position: "CB", height: "5'11\"", weight: "182 lbs", number: "20", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870139.png" },
-                CB2: { name: "Cam Taylor-Britt", college: "Nebraska", position: "CB", height: "5'11\"", weight: "196 lbs", number: "29", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426565.png" },
-                CB3: { name: "Dax Hill", college: "Michigan", position: "CB", height: "6'1\"", weight: "191 lbs", number: "23", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4426452.png" },
-                S1: { name: "Geno Stone", college: "Iowa", position: "S", height: "5'11\"", weight: "207 lbs", number: "22", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4035251.png" },
-                S2: { name: "Jordan Battle", college: "Alabama", position: "S", height: "5'11\"", weight: "210 lbs", number: "27", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4870117.png" },
-                S3: { name: "Tycen Anderson", college: "Toledo", position: "S", height: "6'2\"", weight: "202 lbs", number: "26", headshot: "https://a.espncdn.com/i/headshots/nfl/players/full/4242384.png" }
+                DE1: { name: "Joseph Ossai", college: "Texas", position: "DE", height: "6'4\"", weight: "253 lbs", number: "58", headshot: "https://www.bengals.com/assets/img/headshots/ossai-joseph.jpg" },
+                DE2: { name: "Trey Hendrickson", college: "Florida Atlantic", position: "DE", height: "6'4\"", weight: "270 lbs", number: "91", headshot: "https://www.bengals.com/assets/img/headshots/hendrickson-trey.jpg" },
+                DT1: { name: "B.J. Hill", college: "NC State", position: "DT", height: "6'3\"", weight: "311 lbs", number: "92", headshot: "https://www.bengals.com/assets/img/headshots/hill-bj.jpg" },
+                DT2: { name: "T.J. Slaton Jr.", college: "Florida", position: "DT", height: "6'4\"", weight: "330 lbs", number: "98", headshot: "https://www.bengals.com/assets/img/headshots/slaton-tj.jpg" },
+                LB1: { name: "Logan Wilson", college: "Wyoming", position: "LB", height: "6'2\"", weight: "241 lbs", number: "55", headshot: "https://www.bengals.com/assets/img/headshots/wilson-logan.jpg" },
+                LB2: { name: "Demetrius Knight Jr.", college: "Duke", position: "LB", height: "6'1\"", weight: "240 lbs", number: "44", headshot: "https://www.bengals.com/assets/img/headshots/knight-demetrius.jpg" },
+                LB3: { name: "Barrett Carter", college: "Clemson", position: "LB", height: "6'1\"", weight: "227 lbs", number: "49", headshot: "https://www.bengals.com/assets/img/headshots/carter-barrett.jpg" },
+                CB1: { name: "DJ Turner II", college: "Michigan", position: "CB", height: "5'11\"", weight: "182 lbs", number: "20", headshot: "https://www.bengals.com/assets/img/headshots/turner-dj.jpg" },
+                CB2: { name: "Cam Taylor-Britt", college: "Nebraska", position: "CB", height: "5'11\"", weight: "196 lbs", number: "29", headshot: "https://www.bengals.com/assets/img/headshots/taylor-britt-cam.jpg" },
+                CB3: { name: "Dax Hill", college: "Michigan", position: "CB", height: "6'1\"", weight: "191 lbs", number: "23", headshot: "https://www.bengals.com/assets/img/headshots/hill-dax.jpg" },
+                S1: { name: "Geno Stone", college: "Iowa", position: "S", height: "5'11\"", weight: "207 lbs", number: "22", headshot: "https://www.bengals.com/assets/img/headshots/stone-geno.jpg" },
+                S2: { name: "Jordan Battle", college: "Alabama", position: "S", height: "5'11\"", weight: "210 lbs", number: "27", headshot: "https://www.bengals.com/assets/img/headshots/battle-jordan.jpg" },
+                S3: { name: "Tycen Anderson", college: "Toledo", position: "S", height: "6'2\"", weight: "202 lbs", number: "26", headshot: "https://www.bengals.com/assets/img/headshots/anderson-tycen.jpg" }
             }
         };
 
@@ -498,7 +523,8 @@
             }
         };
 
-        let currentPackage = '11-personnel';
+        let currentOffensePackage = '11-personnel';
+        let currentDefensePackage = '4-3-defense';
 
         // Create manifest data
         const manifestData = {
@@ -617,17 +643,18 @@
             return playerElement;
         }
 
-        function renderFormation(packageName) {
+        function renderFormation(offensePackage, defensePackage) {
             const offenseContainer = document.getElementById('offense-formation');
             const defenseContainer = document.getElementById('defense-formation');
             
             offenseContainer.innerHTML = '';
             defenseContainer.innerHTML = '';
 
-            const formation = formations[packageName];
+            const offenseFormation = formations[offensePackage].offense;
+            const defenseFormation = formations[defensePackage].defense;
 
             // Render offense
-            Object.entries(formation.offense).forEach(([key, position]) => {
+            Object.entries(offenseFormation).forEach(([key, position]) => {
                 const player = playerData.offense[key];
                 if (player) {
                     const playerElement = createPlayer(key, player, position.x, position.y, false);
@@ -636,7 +663,7 @@
             });
 
             // Render defense
-            Object.entries(formation.defense).forEach(([key, position]) => {
+            Object.entries(defenseFormation).forEach(([key, position]) => {
                 const player = playerData.defense[key];
                 if (player) {
                     const playerElement = createPlayer(key, player, position.x, position.y, true);
@@ -669,13 +696,22 @@
             document.getElementById('playerModal').style.display = 'none';
         }
 
-        // Event listeners
-        document.querySelectorAll('.personnel-btn').forEach(btn => {
+        // Event listeners - separate offense and defense controls
+        document.querySelectorAll('.offense-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.personnel-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.offense-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
-                currentPackage = e.target.dataset.package;
-                renderFormation(currentPackage);
+                currentOffensePackage = e.target.dataset.package;
+                renderFormation(currentOffensePackage, currentDefensePackage);
+            });
+        });
+
+        document.querySelectorAll('.defense-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.defense-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentDefensePackage = e.target.dataset.package;
+                renderFormation(currentOffensePackage, currentDefensePackage);
             });
         });
 
@@ -685,7 +721,7 @@
         });
 
         // Initialize app
-        renderFormation(currentPackage);
+        renderFormation(currentOffensePackage, currentDefensePackage);
 
         // PWA install prompt
         let deferredPrompt;
