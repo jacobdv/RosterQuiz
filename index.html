@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cincinnati Bengals Depth Chart</title>
     <link rel="manifest" href="#" id="manifest-placeholder">
-    <meta name="theme-color" content="#FF6600">
+    <meta name="theme-color" content="#FB4F14">
     <style>
         * {
             margin: 0;
@@ -15,13 +15,13 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #FF6600, #000000);
+            background: linear-gradient(135deg, #FB4F14, #000000);
             min-height: 100vh;
             overflow-x: auto;
         }
 
         .header {
-            background: linear-gradient(90deg, #FF6600, #000000);
+            background: linear-gradient(90deg, #FB4F14, #000000);
             color: white;
             text-align: center;
             padding: 20px;
@@ -64,7 +64,7 @@
             padding: 12px 24px;
             border: none;
             border-radius: 25px;
-            background: linear-gradient(45deg, #FF6600, #FF8833);
+            background: linear-gradient(45deg, #FF6600, #FB4F14);
             color: white;
             font-weight: bold;
             cursor: pointer;
@@ -153,7 +153,7 @@
             position: absolute;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #FF6600, #FF8833);
+            background: linear-gradient(135deg, #FF6600, #FB4F14);
             border: 4px solid #000000;
             border-radius: 50%;
             display: flex;
@@ -170,8 +170,8 @@
 
         .player.defense {
             background: linear-gradient(135deg, #000000, #333333);
-            border: 4px solid #FF6600;
-            color: #FF6600;
+            border: 4px solid #FB4F14;
+            color: #FB4F14;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
@@ -318,7 +318,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏈 Cincinnati Bengals Depth Chart</h1>
+        <h1>Cincinnati Bengals Depth Chart</h1>
         <div class="controls">
             <div class="control-group">
                 <h3>Offense</h3>
@@ -377,8 +377,8 @@
         // Player data (Updated 2025 Cincinnati Bengals roster with Bengals website headshots)
         const playerData = {
             offense: {
-                QB: { name: "Joe Burrow", college: "LSU", position: "QB", height: "6'4\"", weight: "221 lbs", number: "9", headshot: "https://www.bengals.com/assets/img/headshots/burrow-joe.jpg" },
-                RB1: { name: "Chase Brown", college: "Illinois", position: "RB", height: "5'9\"", weight: "209 lbs", number: "30", headshot: "https://www.bengals.com/assets/img/headshots/brown-chase.jpg" },
+                QB: { name: "Joe Burrow", college: "LSU", position: "QB", height: "6'4\"", weight: "215 lbs", number: "9", headshot: "https://static.clubs.nfl.com/image/upload/t_editorial_landscape_6_desktop_2x/f_auto/bengals/ygxpkhhnl62zjtwb0sdm.jpg" },
+                RB1: { name: "Chase Brown", college: "Illinois", position: "RB", height: "5'10\"", weight: "210 lbs", number: "30", headshot: "https://static.clubs.nfl.com/image/upload/t_editorial_landscape_6_desktop_2x/f_auto/bengals/wu0ol7tj3byhi8ge5wi8.jpg" },
                 WR1: { name: "Ja'Marr Chase", college: "LSU", position: "WR", height: "6'0\"", weight: "201 lbs", number: "1", headshot: "https://www.bengals.com/assets/img/headshots/chase-jamarr.jpg" },
                 WR2: { name: "Tee Higgins", college: "Clemson", position: "WR", height: "6'4\"", weight: "219 lbs", number: "85", headshot: "https://www.bengals.com/assets/img/headshots/higgins-tee.jpg" },
                 WR3: { name: "Andrei Iosivas", college: "Princeton", position: "WR", height: "6'3\"", weight: "205 lbs", number: "17", headshot: "https://www.bengals.com/assets/img/headshots/iosivas-andrei.jpg" },
@@ -411,17 +411,17 @@
         const formations = {
             '11-personnel': {
                 offense: {
-                    QB: { x: 50, y: 15 },  // Closest to 50-yard line
+                    QB: { x: 50, y: 30 },  // Closest to 50-yard line
                     RB1: { x: 35, y: 30 },
-                    WR1: { x: 5, y: 75 }, // Far from 50-yard line
-                    WR2: { x: 95, y: 75 },
-                    WR3: { x: 15, y: 55 },
-                    TE1: { x: 78, y: 25 },
-                    LT: { x: 20, y: 20 },
-                    LG: { x: 32, y: 20 },
-                    C: { x: 50, y: 20 },
-                    RG: { x: 68, y: 20 },
-                    RT: { x: 80, y: 20 }
+                    WR1: { x: 5, y: 12 }, // Far from 50-yard line
+                    WR2: { x: 95, y: 12 },
+                    WR3: { x: 15, y: 17 },
+                    TE1: { x: 78, y: 17 },
+                    LT: { x: 20, y: 14 },
+                    LG: { x: 32, y: 12 },
+                    C: { x: 50, y: 10 },
+                    RG: { x: 68, y: 12 },
+                    RT: { x: 80, y: 14 }
                 },
                 defense: {
                     DE1: { x: 15, y: 75 }, // Far from 50-yard line
